@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Lead Generator — Open Source Lead Generation System</title>
+    <meta name="description" content="Open-source Laravel lead generation system with AI enrichment, multi-platform scraping, bulk email, and WhatsApp outreach.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #6366f1; --primary-dark: #4f46e5; --primary-light: #818cf8;
+            --accent: #06b6d4; --accent-dark: #0891b2;
+            --bg: #0f172a; --bg-card: #1e293b; --bg-card-alt: #334155;
+            --text: #f1f5f9; --text-muted: #94a3b8; --text-dim: #64748b;
+            --border: #334155; --gradient: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+        }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(15,23,42,.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo { font-size: 20px; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav-links { display: flex; gap: 28px; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+        .nav-links a:hover { color: var(--text); }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: all .2s; border: none; cursor: pointer; }
+        .btn-primary { background: var(--gradient); color: #fff; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(99,102,241,.3); }
+        .btn-outline { border: 1.5px solid var(--border); color: var(--text); background: transparent; }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary-light); }
+        .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
+
+        /* HERO */
+        .hero { padding: 140px 0 80px; text-align: center; position: relative; }
+        .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,.15) 0%, transparent 70%); pointer-events: none; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 100px; background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.2); color: var(--primary-light); font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+        .hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1.5px; }
+        .hero h1 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 18px; color: var(--text-muted); max-width: 640px; margin: 0 auto 36px; }
+        .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        /* STATS */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 60px 0; }
+        .stat { text-align: center; padding: 24px; border-radius: 16px; background: var(--bg-card); border: 1px solid var(--border); }
+        .stat-number { font-size: 32px; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+        /* FEATURES */
+        .section { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 48px; }
+        .section-title h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; }
+        .section-title p { color: var(--text-muted); font-size: 16px; max-width: 560px; margin: 0 auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .feature-card { padding: 32px; border-radius: 16px; background: var(--bg-card); border: 1px solid var(--border); transition: all .3s; }
+        .feature-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,.1); }
+        .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+        .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        /* PLATFORMS */
+        .platforms { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 40px 0; }
+        .platform-tag { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); font-size: 14px; font-weight: 500; color: var(--text-muted); }
+
+        /* TECH STACK */
+        .tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .tech-card { padding: 24px; border-radius: 16px; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 16px; }
+        .tech-card i { font-size: 24px; color: var(--primary-light); margin-top: 2px; }
+        .tech-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .tech-card p { font-size: 13px; color: var(--text-muted); }
+
+        /* INSTALL */
+        .install-section { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border); padding: 48px; margin: 40px 0; }
+        .install-section h2 { font-size: 28px; font-weight: 800; margin-bottom: 24px; text-align: center; }
+        .code-block { background: #0d1117; border-radius: 12px; padding: 24px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.8; overflow-x: auto; border: 1px solid #21262d; }
+        .code-block .comment { color: #8b949e; }
+        .code-block .cmd { color: #79c0ff; }
+        .code-block .flag { color: #d2a8ff; }
+        .code-block .string { color: #a5d6ff; }
+
+        /* AUTHOR */
+        .author-section { text-align: center; padding: 60px 0; border-top: 1px solid var(--border); margin-top: 40px; }
+        .author-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: #fff; margin: 0 auto 16px; }
+        .author-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .author-role { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+        .author-links { display: flex; gap: 12px; justify-content: center; }
+        .author-links a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all .2s; }
+        .author-links a:hover { border-color: var(--primary); color: var(--primary-light); }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 13px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo"><i class="fa-solid fa-bolt"></i> Lumina Lead Generator</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#tech">Tech Stack</a>
+                <a href="#install">Install</a>
+                <a href="https://github.com/ALASARJADEED/Lumina-Lead-Generator" class="btn btn-outline" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge"><i class="fa-solid fa-star"></i> Open Source & Free Forever</div>
+            <h1>Automate Your <span>Lead Generation</span> with AI</h1>
+            <p>Scrape prospects from 10+ platforms, enrich with AI, and reach them via email & WhatsApp — all from one powerful admin panel.</p>
+            <div class="hero-buttons">
+                <a href="https://github.com/ALASARJADEED/Lumina-Lead-Generator" class="btn btn-primary btn-lg" target="_blank"><i class="fa-brands fa-github"></i> View on GitHub</a>
+                <a href="#install" class="btn btn-outline btn-lg"><i class="fa-solid fa-terminal"></i> Quick Install</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat"><div class="stat-number">10+</div><div class="stat-label">Scraping Platforms</div></div>
+            <div class="stat"><div class="stat-number">9</div><div class="stat-label">AI Providers</div></div>
+            <div class="stat"><div class="stat-number">58</div><div class="stat-label">API Key Slots</div></div>
+            <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Open Source</div></div>
+        </div>
+    </div>
+
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Everything You Need</h2>
+                <p>From scraping to outreach, Lumina handles the entire lead generation pipeline.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(99,102,241,.1);color:#818cf8;"><i class="fa-solid fa-spider"></i></div>
+                    <h3>Multi-Platform Scraping</h3>
+                    <p>Scrape Google Maps, Instagram, Facebook, TikTok, YouTube, Twitter, and more via Apify actors with multi-token fallback.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(6,182,212,.1);color:#22d3ee;"><i class="fa-solid fa-brain"></i></div>
+                    <h3>AI-Powered Enrichment</h3>
+                    <p>Auto-classify leads, score quality, and generate personalized outreach using 9 AI providers with smart key rotation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(16,185,129,.1);color:#34d399;"><i class="fa-solid fa-envelope-bulk"></i></div>
+                    <h3>Bulk Email Outreach</h3>
+                    <p>Send personalized emails to hundreds of leads with templates, placeholders, and SMTP integration (Gmail, Yahoo, custom).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(34,197,94,.1);color:#4ade80;"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3>WhatsApp Messaging</h3>
+                    <p>Bulk send WhatsApp messages, import group members, and generate AI-crafted messages for each lead.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(251,146,60,.1);color:#fb923c;"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>Category Management</h3>
+                    <p>Organize leads into categories, set auto-generation rules, and track per-category statistics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(168,85,247,.1);color:#c084fc;"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>Multi-Key Fallback</h3>
+                    <p>Never hit rate limits again. Automatic rotation across multiple API keys for every provider — Apify, OpenAI, DeepSeek, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Scrape From Anywhere</h2>
+                <p>Connect to 10+ platforms and import from any source.</p>
+            </div>
+            <div class="platforms">
+                <div class="platform-tag"><i class="fa-solid fa-map-pin" style="color:#34a853;"></i> Google Maps</div>
+                <div class="platform-tag"><i class="fa-solid fa-star" style="color:#fbbc04;"></i> Google Reviews</div>
+                <div class="platform-tag"><i class="fa-solid fa-search" style="color:#4285f4;"></i> Google Search</div>
+                <div class="platform-tag"><i class="fa-brands fa-instagram" style="color:#e4405f;"></i> Instagram</div>
+                <div class="platform-tag"><i class="fa-brands fa-facebook" style="color:#1877f2;"></i> Facebook</div>
+                <div class="platform-tag"><i class="fa-brands fa-tiktok" style="color:#fff;"></i> TikTok</div>
+                <div class="platform-tag"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</div>
+                <div class="platform-tag"><i class="fa-brands fa-x-twitter" style="color:#fff;"></i> Twitter / X</div>
+                <div class="platform-tag"><i class="fa-solid fa-cart-shopping" style="color:#ff6d01;"></i> E-Commerce</div>
+                <div class="platform-tag"><i class="fa-solid fa-address-card" style="color:#6c757d;"></i> vCard Import</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="tech">
+        <div class="container">
+            <div class="section-title">
+                <h2>Built With Modern Tech</h2>
+                <p>Robust, scalable, and easy to customize.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <i class="fa-brands fa-php"></i>
+                    <div><h4>Laravel 9 + PHP 8.3</h4><p>Enterprise-grade backend with Eloquent ORM, queues, and Blade templating.</p></div>
+                </div>
+                <div class="tech-card">
+                    <i class="fa-solid fa-database"></i>
+                    <div><h4>SQLite Database</h4><p>Zero-config database. No server setup needed — just works out of the box.</p></div>
+                </div>
+                <div class="tech-card">
+                    <i class="fa-brands fa-bootstrap"></i>
+                    <div><h4>Bootstrap 5 + jQuery</h4><p>Responsive admin panel with dark/light theme toggle.</p></div>
+                </div>
+                <div class="tech-card">
+                    <i class="fa-solid fa-robot"></i>
+                    <div><h4>9 AI Providers</h4><p>Cloudflare, DeepSeek, OpenAI, OpenRouter, GROQ, Gemini, NVIDIA, Mistral, Z.AI — all with multi-key fallback.</p></div>
+                </div>
+                <div class="tech-card">
+                    <i class="fa-solid fa-arrows-spin"></i>
+                    <div><h4>Background Jobs</h4><p>Long-running scraping via exec() with real-time status polling. No queue workers needed.</p></div>
+                </div>
+                <div class="tech-card">
+                    <i class="fa-solid fa-key"></i>
+                    <div><h4>58 API Key Slots</h4><p>Store keys for every service via the admin panel. No code changes needed.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="install">
+        <div class="container">
+            <div class="install-section">
+                <h2><i class="fa-solid fa-rocket" style="color:var(--primary-light);"></i> Get Started in 3 Steps</h2>
+                <div class="code-block">
+<span class="comment"># 1. Clone the repository</span>
+<span class="cmd">git clone</span> <span class="string">https://github.com/ALASARJADEED/Lumina-Lead-Generator.git</span>
+<span class="cmd">cd</span> Lumina-Lead-Generator
+
+<span class="comment"># 2. Install dependencies</span>
+<span class="cmd">composer install</span>
+
+<span class="comment"># 3. Configure and run</span>
+<span class="cmd">cp</span> .env.example .env
+<span class="cmd">php artisan</span> key:generate
+<span class="cmd">touch</span> database/database.sqlite
+<span class="cmd">php artisan</span> migrate
+<span class="cmd">php artisan</span> db:seed
+<span class="cmd">php artisan</span> serve <span class="flag">--host=0.0.0.0</span> <span class="flag">--port=8000</span>
+
+<span class="comment"># Open http://localhost:8000/login</span>
+<span class="comment"># Configure your API keys in Settings panel</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="author-section">
+        <div class="container">
+            <div class="author-avatar">AJ</div>
+            <div class="author-name">AL ASAR JADEED</div>
+            <div class="author-role">Digital Marketing & Technology</div>
+            <div class="author-links">
+                <a href="https://infoalasarjadeed.com" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
+                <a href="mailto:info@infoalasarjadeed.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://github.com/ALASARJADEED" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lumina Lead Generator. Built by <strong>AL ASAR JADEED</strong>. Released under MIT License.</p>
+        </div>
+    </footer>
+</body>
+</html>

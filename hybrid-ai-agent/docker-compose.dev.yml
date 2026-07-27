@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: hybrid-ai-mongo-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data-dev:/data/db
+    networks:
+      - hybrid-ai-network
+
+  server-dev:
+    image: node:20-alpine
+    container_name: hybrid-ai-server-dev
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - ./server:/app
+      - whatsapp-session-dev:/app/whatsapp-session
+    command: npm run dev
+    networks:
+      - hybrid-ai-network
+
+volumes:
+  mongo-data-dev:
+  whatsapp-session-dev:
+
+networks:
+  hybrid-ai-network:
+    driver: bridge
