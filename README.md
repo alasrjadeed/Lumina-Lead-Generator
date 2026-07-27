@@ -3,7 +3,7 @@
 > Open-source Laravel lead generation system with AI enrichment, multi-platform scraping, bulk email, and WhatsApp outreach.
 
 **Author:** AL ASAR JADEED
-**Web:** [infoalasarjadeed.com](https://infoalasarjadeed.com)
+**Web:** [www.asarjadeed.com](https://www.asarjadeed.com)
 **Email:** [info@infoalasarjadeed.com](mailto:info@infoalasarjadeed.com)
 
 ## Quick Start
